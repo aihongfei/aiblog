@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiblogserver.dao.CommentDao">
+
+    <resultMap id="BaseResultMap" type="com.aiblogserver.entity.Comment">
+        <!--@Table comment-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="blogId" column="blog_id" jdbcType="INTEGER"/>
+        <result property="replyId" column="reply_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, nickname, email, content, create_time, blog_id, reply_id
+        from AiBlog.comment
+        where id = #{id}
+    </select>
+
+    <select id="queryByBlogId" resultMap="BaseResultMap">
+        select
+            id, nickname, email, content, create_time, blog_id, reply_id
+        from AiBlog.comment
+        where blog_id = #{blogId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into AiBlog.comment(nickname, email, content, create_time, blog_id, reply_id)
+        values (#{nickname}, #{email}, #{content}, #{createTime}, #{blogId}, #{replyId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update AiBlog.comment
+        <set>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="blogId != null">
+                blog_id = #{blogId},
+            </if>
+            <if test="replyId != null">
+                reply_id = #{replyId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from AiBlog.comment where id = #{id}
+    </delete>
+
+    <!--通过博客id删除-->
+    <delete id="deleteByBlogId">
+        delete from AiBlog.comment where blog_id = #{blogId}
+    </delete>
+
+</mapper>

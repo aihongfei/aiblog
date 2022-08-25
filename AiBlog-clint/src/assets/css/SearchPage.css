@@ -1,0 +1,95 @@
+.all {
+  /*background-image: linear-gradient(#e66465, #9198e5);*/
+}
+
+.bg {
+  background-image: linear-gradient(#e66465, #9198e5);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: -1
+}
+
+.searchClass {
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  width: 50%;
+  border-radius: 20px;
+  height: 40px;
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: block;
+}
+
+.el-icon-search {
+  display: block;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .el-icon-search {
+    right: 10%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .el-icon-search {
+    right: 5%;
+  }
+}
+
+.content {
+}
+
+.content h3 {
+  cursor: pointer;
+}
+
+.content p {
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  color: #d3dce6;
+}
+
+.description {
+  margin: auto;
+  width: 70%;
+  font-size: 90%;
+  color: #E0E0E0;
+}
+
+.description p {
+  margin: 0;
+}
+
+.msg {
+  margin-top: 5px;
+  color: #d3dce6;;
+  font-size: 70%
+}
+
+.page {
+  font-family: "Songti TC";
+  color: #E0E0E0;
+}
+
+.select {
+  color: darkgrey;
+}
+
+.page .toSelect:hover {
+  cursor: pointer;
+  color: #97cbff;
+  text-decoration: underline;
+}

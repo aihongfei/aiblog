@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiblogserver.dao.TypeDao">
+
+    <resultMap id="BaseResultMap" type="com.aiblogserver.entity.Type">
+        <!--@Table type-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          type.id, name,count(*) as count
+        from AiBlog.type,AiBlog.blog
+        where type.id = #{id} and type.id = blog.type_id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          type.id, name, count(type_id) as count
+        from AiBlog.type
+        left join AiBlog.blog
+        on type.id = blog.type_id
+        group by type.id
+    </select>
+
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+            type.id, name, count(type_id) as count
+        from AiBlog.type
+                 left join AiBlog.blog
+                           on type.id = blog.type_id
+        where name like #{name}
+        group by type.id
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into AiBlog.type(name)
+        values (#{name})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update AiBlog.type
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from AiBlog.type where id = #{id}
+    </delete>
+
+</mapper>

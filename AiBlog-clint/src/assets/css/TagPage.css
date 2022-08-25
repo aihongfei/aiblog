@@ -1,0 +1,38 @@
+.tagContent {
+  width: 98%;
+  /*background-color: #ffffff;*/
+  padding: 5% 1% 10%;
+}
+
+.bg {
+  background: rgb(242, 246, 250);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1
+}
+
+.box-card {
+
+}
+
+.title {
+  text-align: center;
+  font-weight: 200;
+}
+
+.text {
+  color: #738a94;
+  display: flex;
+  flex-wrap: wrap
+}
+
+
+.text .tag:hover {
+  text-decoration: underline;
+  color: #97cbff;
+  cursor: pointer;
+}
+

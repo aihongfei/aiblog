@@ -1,0 +1,71 @@
+.logo {
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+  padding: 10px;
+  font-family: BarbaraHand;
+  color: #686967;
+  text-decoration: none;
+}
+
+
+@media screen and (max-width: 768px) {
+  .div{
+    z-index: 10000;
+  }
+  .content{
+
+  }
+  .logo {
+    font-size: 200%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .div{
+    margin-right: -5%;
+    transform: skew(-10deg,0deg);
+  }
+  .content{
+    transform: skew(10deg,0deg);
+  }
+  .logo {
+    font-size: 400%;
+  }
+}
+
+.content{
+  margin: auto;
+  width: 60%;
+  height: 80%;
+  padding: 50px;
+}
+
+.point {
+  position: absolute;
+  right: 10%;
+  top: 100px;
+  z-index: 101;
+  font-size: 150%;
+  padding: 10px;
+  list-style-type:none;
+
+}
+
+li{
+  margin-top: 20%;
+}
+
+@font-face {
+  font-family: 'barbarahand';
+  src:url('../font/barbarahand-webfont.ttf');
+}
+
+.content span{
+  cursor: pointer;
+}
+
+.content span:hover{
+  color: #3a8ee6;
+}
+

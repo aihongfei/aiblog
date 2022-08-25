@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiblogserver.dao.BlogDao">
+
+    <resultMap id="BaseResultMap" type="com.aiblogserver.entity.Blog">
+        <!--@Table blog-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="OTHER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="published" column="published" jdbcType="OTHER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="clickNum" column="click_num" jdbcType="INTEGER"/>
+        <result property="typeId" column="type_id" jdbcType="INTEGER"/>
+        <result property="typeName" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               name
+        from AiBlog.blog,
+             AiBlog.type
+        where blog.id = #{id}
+          and blog.type_id = type.id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               name
+        from AiBlog.blog,
+             AiBlog.type
+        where blog.type_id = type.id
+    </select>
+
+    <select id="queryAllPublish" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               name
+        from AiBlog.blog,
+             AiBlog.type
+        where blog.type_id = type.id
+          and published = 1
+    </select>
+
+    <select id="queryRandom" resultMap="BaseResultMap">
+        select id, title
+        from blog
+        where published = 1
+        order by rand()
+        limit #{size}
+    </select>
+
+    <select id="queryRandomByKey" resultMap="BaseResultMap">
+        select id, title
+        from blog
+        where title like #{keyword}
+           or description like #{keyword}
+           or content like #{keyword} and published = 1
+        order by rand()
+        limit #{size}
+    </select>
+
+    <select id="queryByKeyWords" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               name
+        from AiBlog.blog
+                 left join AiBlog.type
+                           on blog.type_id = type.id
+        where title like #{keyword}
+           or description like #{keyword}
+           or content like #{keyword}
+
+    </select>
+
+    <select id="querybyTypeId" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               name
+        from AiBlog.blog,
+             AiBlog.type
+        where type_id = #{typeId}
+          and blog.type_id = type.id
+    </select>
+
+    <select id="querybyTagId" resultMap="BaseResultMap">
+        select blog.id,
+               title,
+               content,
+               create_time,
+               update_time,
+               published,
+               description,
+               click_num,
+               type_id,
+               type.name
+        from AiBlog.blog,
+             AiBlog.type,
+             AiBlog.tag,
+             AiBlog.blog_tag
+        where blog.type_id = type.id
+          and blog_id = blog.id
+          and tag_id = tag.id
+          and tag.id = #{tagId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into AiBlog.blog(title, content, create_time, update_time, published, description, click_num, type_id)
+        values (#{title}, #{content}, #{createTime}, #{updateTime}, #{published}, #{description}, #{clickNum},
+                #{typeId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update AiBlog.blog
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="published != null">
+                published = #{published},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="clickNum != null">
+                click_num = #{clickNum},
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateClickNum">
+        update AiBlog.blog
+        <set>
+            <if test="clickNum != null">
+                click_num = click_num+1
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updatePublish">
+        update AiBlog.blog
+        <set>
+            <if test="published != null">
+                published = #{published}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from AiBlog.blog
+        where id = #{id}
+    </delete>
+
+</mapper>

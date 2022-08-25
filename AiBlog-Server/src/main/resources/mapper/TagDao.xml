@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiblogserver.dao.TagDao">
+
+    <resultMap id="BaseResultMap" type="com.aiblogserver.entity.Tag">
+        <!--@Table tag-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select tag.id,
+               name,
+               count(*) as count
+        from AiBlog.tag,
+             AiBlog.blog,
+             AiBlog.blog_tag
+        where tag.id = #{id}
+          and tag.id = blog_tag.tag_id
+          and blog.id = blog_tag.blog_id
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select tag.id,
+               name,
+               count(tag_id) as count
+        from AiBlog.tag
+                 left join AiBlog.blog_tag
+                           on tag.id = blog_tag.tag_id
+        group by tag.id, name
+    </select>
+
+    <select id="queryByName" resultMap="BaseResultMap">
+        select tag.id,
+               name,
+               count(tag_id) as count
+        from AiBlog.tag
+                 left join AiBlog.blog_tag
+                           on tag.id = blog_tag.tag_id
+        where name like #{name}
+        group by tag.id, name
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into AiBlog.tag(name)
+        values (#{name})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update AiBlog.tag
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from AiBlog.tag
+        where id = #{id}
+    </delete>
+
+</mapper>
